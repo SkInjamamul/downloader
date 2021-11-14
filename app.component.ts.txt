@@ -1,0 +1,61 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DownloadServiceService } from './service/download-service.service';
+
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit{
+  title = 'yt-downloader';
+  urlForm: FormGroup = new FormGroup;
+
+
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private downloadService: DownloadServiceService
+  ){
+
+  }
+
+
+  ngOnInit(){
+    this.initializeForm();
+  }
+
+  initializeForm(){
+    this.urlForm = this.formBuilder.group({
+      url: ['',[Validators.required]]
+    });
+  }
+  getAudio(){
+    this.downloadService.getAudioFormUrl(this.urlForm.value.url).subscribe((res) =>{
+      this.downloadFile(res, "application/audio/mp3")
+    }), (error: any) => {
+      alert(error);
+    }
+  }
+
+
+  getVideo(){
+    this.downloadService.getVideoFormUrl(this.urlForm.value.url).subscribe((res) =>{
+      this.downloadFile(res, "application/video/mp4")
+    }), (error: any) => {
+      alert(error);
+    }
+  }
+
+
+  downloadFile(data: any, type : string ){
+    let blob = new Blob([data],{type:type});
+    let url = window.URL.createObjectURL(blob);
+    let pwa = window.open(url);
+    if(!pwa || pwa.closed || typeof pwa.closed == 'undefined'){
+      alert('please disable your pop-up'); 
+    }
+  }
+
+}

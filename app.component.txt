@@ -1,0 +1,12 @@
+<div>
+  <span> Url Link</span>
+  <form [formGroup] = "urlForm">
+    <mat-form-field>
+        <input matInput type = "url" formControlName = "url" />
+    </mat-form-field>
+  </form>
+
+
+  <input type="button" value="get video" (click)="getVideo()" />
+  <input type="button" value="get audio" (click)="getAudio()" />
+</div>

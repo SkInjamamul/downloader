@@ -1,0 +1,5 @@
+const downloadRoutes = require('./routes/download');
+
+module.exports = (app) => {
+    app.use('/', downloadRoutes)
+}
